@@ -1,86 +1,24 @@
 <!DOCTYPE html>
 <html lang="uk">
+
 <head>
   <meta charset="UTF-8" />
   <title>Аналіз Оцінок</title>
 </head>
+
 <body>
-  <h2>Завантажте CSV файл із журналом:</h2>
-  <input type="file" id="csvFileInput" accept=".csv" />
-  <button onclick="downloadCSV()">Завантажити результат</button>
+  <h1>Lesson Summary Parser</h1>
+
+  <input type="file" id="fileInput" accept=".csv">
+  <div id="dropZone" style="margin-top: 1em; padding: 2em; border: 2px dashed #999; text-align: center;">
+    Drag and drop a CSV file here
+  </div>
+
+  <button id="downloadBtn" disabled>Download Result</button>
+
   <pre id="output"></pre>
 
-  <script>
-    let resultCSV = '';
-
-    document.getElementById('csvFileInput').addEventListener('change', function (e) {
-      const file = e.target.files[0];
-      if (!file) return;
-
-      const reader = new FileReader();
-      reader.onload = function (e) {
-        const text = e.target.result;
-        const lines = text.split(/\r?\n/).filter(line => line.trim() !== '');
-        const headersDates = lines[0].split(',');
-        const headersParams = lines[1].split(',');
-
-        const paramIndices = {};
-        headersParams.forEach((param, index) => {
-          if (index === 0) return; // skip 'Учень'
-          const name = param.trim();
-          if (!name) return;
-          if (!paramIndices[name]) paramIndices[name] = [];
-          paramIndices[name].push(index);
-        });
-
-        const outputRows = [];
-        const headerRow = ['Учень', ...Object.keys(paramIndices)];
-        outputRows.push(headerRow);
-
-        for (let i = 2; i < lines.length; i++) {
-          const row = lines[i].split(',');
-          const studentName = row[0];
-          const paramAverages = [];
-
-          for (const paramName of Object.keys(paramIndices)) {
-            const indices = paramIndices[paramName];
-            const values = [];
-
-            indices.forEach(index => {
-              const val = row[index];
-              const num = parseFloat(val.replace(',', '.'));
-              if (!isNaN(num)) values.push(num);
-            });
-
-            const avg = values.length > 0
-              ? (values.reduce((a, b) => a + b, 0) / values.length).toFixed(2)
-              : '';
-            paramAverages.push(avg);
-          }
-
-          outputRows.push([studentName, ...paramAverages]);
-        }
-
-        // Build final CSV string
-        resultCSV = outputRows.map(row => row.map(cell =>
-          `"${cell.replace(/"/g, '""')}"`).join(',')).join('\n');
-
-        document.getElementById('output').textContent = resultCSV;
-      };
-      reader.readAsText(file, 'UTF-8');
-    });
-
-    function downloadCSV() {
-      if (!resultCSV) return;
-      const blob = new Blob([resultCSV], { type: 'text/csv;charset=utf-8;' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'student_averages.csv';
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-    }
-  </script>
+  <script src="script.js"></script>
 </body>
+
 </html>
