@@ -10,22 +10,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (file) processFile(file);
     });
 
-    // dropZone.addEventListener('dragover', event => {
-    //     event.preventDefault();
-    //     dropZone.style.backgroundColor = '#eef';
-    // });
-
-    // dropZone.addEventListener('dragleave', () => {
-    //     dropZone.style.backgroundColor = '';
-    // });
-
-    // dropZone.addEventListener('drop', event => {
-    //     event.preventDefault();
-    //     dropZone.style.backgroundColor = '';
-    //     const file = event.dataTransfer.files[0];
-    //     if (file) processFile(file);
-    // });
-
     dropZone.addEventListener('dragover', e => {
         e.preventDefault();
         dropZone.classList.add('dragover');

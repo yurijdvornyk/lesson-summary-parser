@@ -3,25 +3,24 @@
 
 <head>
   <meta charset="UTF-8" />
-  <title>Аналіз Оцінок</title>
+  <title>Аналіз оцінок учнів</title>
 </head>
 
 <body>
-  <h1>Lesson Summary Parser</h1>
+  <h1>Обчислення середніх оцінок учнів</h1>
 
   <input type="file" id="fileInput" accept=".csv">
   <div id="dropZone" class="dropzone">
-    Drag & drop your CSV file here or use the file input below.
+    Перетягніть файл з оцінками у форматі CSV
   </div>
-  
-
-  <button id="downloadBtn" disabled>Download Result</button>
 
   <h2>Початкові дані</h2>
   <table id="originalTable" border="1" style="border-collapse: collapse; margin-bottom: 2em;"></table>
 
   <h2>Опрацьовані дані</h2>
   <table id="outputTable" border="1" style="border-collapse: collapse;"></table>
+
+  <button id="downloadBtn" disabled>Завантажте результат</button>
 
   <script src="script.js"></script>
 </body>
