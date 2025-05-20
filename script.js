@@ -49,10 +49,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const lines = csvText.trim().split('\n').map(line => line.split(','));
         const [headerRow, paramRow, ...dataRows] = lines;
 
+        // Render original CSV
+        renderTable([headerRow, paramRow, ...dataRows], "originalTable");
+
+        // Prepare result
         const result = [["Учень"]];
         const paramMap = {};
 
-        // Build index to parameter name mapping
+        // Map parameters to column indices
         for (let i = 1; i < paramRow.length; i++) {
             const param = paramRow[i].trim();
             if (!paramMap[param]) {
@@ -62,7 +66,7 @@ document.addEventListener('DOMContentLoaded', () => {
             paramMap[param].push(i);
         }
 
-        // For each student, compute averages
+        // Compute averages for each student
         for (const row of dataRows) {
             const student = row[0];
             const outputRow = [student];
@@ -80,9 +84,26 @@ document.addEventListener('DOMContentLoaded', () => {
             result.push(outputRow);
         }
 
-        // Display output as CSV
+        // Update download content
         latestCSV = result.map(r => r.join(',')).join('\n');
-        outputEl.textContent = latestCSV;
         downloadBtn.disabled = false;
+
+        // Render result table
+        renderTable(result, "outputTable");
+    }
+
+
+    function renderTable(data, tableId) {
+        const table = document.getElementById(tableId);
+        table.innerHTML = ''; // Clear previous content
+
+        for (let i = 0; i < data.length; i++) {
+            const row = table.insertRow();
+            for (let cell of data[i]) {
+                const cellElement = i === 0 ? document.createElement('th') : document.createElement('td');
+                cellElement.textContent = cell;
+                row.appendChild(cellElement);
+            }
+        }
     }
 });
