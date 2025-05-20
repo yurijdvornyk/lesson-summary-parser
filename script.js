@@ -10,21 +10,38 @@ document.addEventListener('DOMContentLoaded', () => {
         if (file) processFile(file);
     });
 
-    dropZone.addEventListener('dragover', event => {
-        event.preventDefault();
-        dropZone.style.backgroundColor = '#eef';
+    // dropZone.addEventListener('dragover', event => {
+    //     event.preventDefault();
+    //     dropZone.style.backgroundColor = '#eef';
+    // });
+
+    // dropZone.addEventListener('dragleave', () => {
+    //     dropZone.style.backgroundColor = '';
+    // });
+
+    // dropZone.addEventListener('drop', event => {
+    //     event.preventDefault();
+    //     dropZone.style.backgroundColor = '';
+    //     const file = event.dataTransfer.files[0];
+    //     if (file) processFile(file);
+    // });
+
+    dropZone.addEventListener('dragover', e => {
+        e.preventDefault();
+        dropZone.classList.add('dragover');
     });
 
     dropZone.addEventListener('dragleave', () => {
-        dropZone.style.backgroundColor = '';
+        dropZone.classList.remove('dragover');
     });
 
-    dropZone.addEventListener('drop', event => {
-        event.preventDefault();
-        dropZone.style.backgroundColor = '';
-        const file = event.dataTransfer.files[0];
+    dropZone.addEventListener('drop', e => {
+        e.preventDefault();
+        dropZone.classList.remove('dragover');
+        const file = e.dataTransfer.files[0];
         if (file) processFile(file);
     });
+
 
     downloadBtn.addEventListener('click', () => {
         const blob = new Blob([latestCSV], { type: 'text/csv;charset=utf-8;' });
